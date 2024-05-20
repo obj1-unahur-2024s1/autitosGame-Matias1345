@@ -1,0 +1,33 @@
+import wollok.game.*
+import auto.*
+import pared.*
+
+program miPrimerWollokGame {
+	// límites del tablero de juego
+	game.width(14)
+	game.height(8)
+
+	// fondo del tablero de juego
+	game.boardGround("empedrado.jpg")
+
+	// agregamos a nuestro objeto auto
+	game.addVisual(auto)
+	game.addVisual(pared)
+	
+	//Movimientos y controles
+	keyboard.d().onPressDo { auto.moverADerecha() }
+	keyboard.w().onPressDo { auto.moverArriba() }
+	keyboard.a().onPressDo { auto.moverAIzquierda() }
+	keyboard.s().onPressDo { auto.moverAbajo() }
+	keyboard.r().onPressDo { auto.reiniciarPos() }
+	keyboard.r().onPressDo { pared.centrar() }
+	
+	game.whenCollideDo(auto,{obstaculo=>
+		game.say(auto,"Game over")
+		game.stop()	
+	})
+	game.onTick(2000,"movimiento",{pared.moverseAlAzar()})
+	
+	// que arranque el juego!
+	game.start()
+}
